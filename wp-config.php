@@ -20,19 +20,19 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'database_name_here');
+define('DB_NAME', 'demowp_aspen');
 
 /** MySQL database username */
-define('DB_USER', 'username_here');
+define('DB_USER', 'root');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'password_here');
+define('DB_PASSWORD', '');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
 
 /** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
+define('DB_CHARSET', 'utf8mb4');
 
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
@@ -46,14 +46,14 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'put your unique phrase here');
-define('SECURE_AUTH_KEY',  'put your unique phrase here');
-define('LOGGED_IN_KEY',    'put your unique phrase here');
-define('NONCE_KEY',        'put your unique phrase here');
-define('AUTH_SALT',        'put your unique phrase here');
-define('SECURE_AUTH_SALT', 'put your unique phrase here');
-define('LOGGED_IN_SALT',   'put your unique phrase here');
-define('NONCE_SALT',       'put your unique phrase here');
+define('AUTH_KEY',         '6=o00Q1rY0%Nq3K31GOUayIj%[]__Lc[D}.C1t;YR{z>%52C|I~?z1xd0D-xgjhx');
+define('SECURE_AUTH_KEY',  '.m2q:L~[aHl.a6MaJiQIm.!t*z7+Ya(.[1Ls z7TSHVHBrq:hMQNhc{K$>V=AvLk');
+define('LOGGED_IN_KEY',    'JJ{jVYAT?jD4eKdf#6#yigNXN&A}I<NY]N~twO_(PYL+7BC6;zH<X<me<<5G#>}]');
+define('NONCE_KEY',        '*P$8@b#Z#t38Lz XA(-TiEe[RsMi3CQxKQ%ZH399]q_]d^jGW4:}brx{xkqs+`6;');
+define('AUTH_SALT',        'I?a^S0$JC,|gBLXIN?{,y|U}+u<j-^9U9HTwk<#g-[I@ 0M5424Og-<.w>^Qx;U6');
+define('SECURE_AUTH_SALT', '=+^(d;j9?)(kyVcqQ9<1LaP@,tulQP`!uHfoE:OCkIeAMm>/!GXL^]X@hkI^%59i');
+define('LOGGED_IN_SALT',   'tzS(uSWa53a~WhT<,ZKz~||C#`ULM__NeP=an_!/mPr] C/42_S?Pd/859GI<2br');
+define('NONCE_SALT',       'D{vPoW]014C5cqG8VM;*ofM|  T <B *t,WQI&3DiZvxs=[IsT(6/To1Y1q-5_/G');
 
 /** A couple extra tweaks to help things run well on Pantheon. **/
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == "localhost") {
