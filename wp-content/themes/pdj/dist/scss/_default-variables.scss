@@ -17,13 +17,9 @@ $mobile: 480px;
 
 // Set the proper directory for the Bootstrap Glyphicon font.
 $icon-font-path: '../bootstrap/assets/fonts/bootstrap/';
-$container-large-desktop: 1098px !default;
+$container-large-desktop: 1200px !default;
 
 // Fonts.
-@mixin helvetica {
-  font-family: 'Open Sans', helvetica, sans-serif;
-}
-
 @mixin opensans {
   font-family: 'Open Sans', sans-serif;
 }
@@ -31,43 +27,32 @@ $container-large-desktop: 1098px !default;
 $base-font-size: 14px;
 
 // Color.
-$blue: #13294b;
-$light-blue: #005eb8;
-$red: #dd3333;
-$orange: #fe5000;
-$green: #00bf6f;
-$aqua: #00b5e2;
+$green: #32b663;
+$orange: #ffb300;
 $black: #000000;
 $white: #ffffff;
 
-$color-primary: $blue;
-$color-seccond: $aqua;
-$color-third: $orange;
-$color-third: $red;
-$color-five: $green;
-$color-six: $light-blue;
+$color-primary: $green;
+$color-seccond: $orange;
 
-$gray-11: #111111;
-$gray-22: #222222;
 $gray-33: #333333;
-$gray-77: #777777;
-$gray-aa: #aaaaaa;
-$gray-b7: #b7b7b7;
-$gray-dc: #dcdcdc;
+$gray-66: #666666;
+$gray-99: #999999;
+$gray-f5: #f5f5f5;
+$gray-41: #414b4f;
+$gray-5c: #5c6c73;
 $gray-cc: #cccccc;
-$gray-dd: #dddddd;
-$gray-6x: #63666a;
-$gray-ea: #eaeaea;
 
-$color-base: $gray-22;
-$color-link: $color-third;
+$color-base: $gray-33;
+$color-light: $gray-99;
+$color-link: $color-primary;
 $color-link-hover: $color-primary;
-$color-menu: $gray-6x;
-$color-line-menu: $gray-ea;
-$color-pager: $gray-b7;
-$color-line: $gray-dc;
+$color-line-menu: $color-seccond;
+$color-line: $gray-cc;
+$color-line-dark: $gray-5c;
+$color-form: $gray-66;
 
-$bg-header-top: $color-primary;
-$bg-header: $color-six;
-$bg-footer-panel: $bg-header;
-$bg-footer: $bg-header-top;
+$bg-light: $gray-f5;
+$bg-dark: $gray-41;
+
+$bg-footer: $bg-dark;

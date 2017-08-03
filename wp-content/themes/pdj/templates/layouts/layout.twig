@@ -21,7 +21,10 @@
         {% include 'header.twig' %}
       {% endblock %}
 
-      <main role="main">
+      {% block feature %}
+      {% endblock %}
+
+      <main role="main" class="clearfix" style="position: relative;">
         {% block content %}
           {{context}}
         {% endblock %}

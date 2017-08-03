@@ -2,18 +2,22 @@
 add_shortcode('share_buttons', 'share_buttons_render');
 function share_buttons_render($attrs) {
   extract(shortcode_atts (array(
-    'print_icon' => 1
+    'facebook'  => '',
+    'twitter'   => '',
+    'linkedin'  => ''
   ), $attrs));
 
   ob_start();
     $context                = Timber::get_context();
     $context['permalink']   = urlencode(get_the_permalink());
     $context['title']       = urlencode(get_the_title());
-    $context['print_icon']  = $print_icon;
+    $context['facebook']    = $facebook;
+    $context['twitter']     = $twitter;
+    $context['linkedin']    = $linkedin;
     try {
     Timber::render( array( 'social-detail.twig'), $context );
     } catch (Exception $e) {
-      echo 'Could not find a twig file for Shortcode Name: social-detail.twig';
+      echo __('Could not find a twig file for Shortcode Name: social-detail.twig', 'pdj_theme');
     }
   $content = ob_get_contents();
   ob_end_clean();
@@ -150,7 +154,7 @@ function pdj_view_list($attrs) {
     try {
     Timber::render( array( 'view-' . $name . '.twig', 'views.twig'), $context );
     } catch (Exception $e) {
-      echo 'Could not find a twig file for Shortcode Name: ' . $name;
+      echo __('Could not find a twig file for Shortcode Name: ', 'pdj_theme') . $name;
     }
 
     $content = ob_get_contents();

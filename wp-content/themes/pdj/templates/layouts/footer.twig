@@ -1,17 +1,14 @@
 {% block footer %}
   <footer id="footer" class="footer footer-wrapper">
-    <div class="container-wide">
-      <div class="footer__content">
-        {% for key, footer in footer_widget %}
-          <div class="footer__item">
-            <div class="{{ function('acfwidget', 'widget_basic_custom_class', 'footer_widget-' ~ key ) }}">
-              <h2 class="block-title">{{ footer.title }}</h2>
-              <div class="block-content">
-                {{ function('acfwidget', 'widget_basic_body', 'footer_widget-' ~ key ) }}
-              </div>
-            </div>
-          </div>
-        {% endfor %}
+    <div id="footer-bottom" class="footer-bottom footer-bottom-wrapper">
+      <div class="container">
+        <div class="footer__bottom--content">
+          {% for key, footer in footer_widget %}
+            {% if key != '_multiwidget' %}
+              {{ function('acfwidget', 'footer_bottom', 'footer_widget-' ~ key ) }}
+            {% endif %}
+          {% endfor %}
+        </div>
       </div>
     </div>
   </footer>

@@ -14,11 +14,9 @@
 		
 		_init: function()
 		{
-			$( this.nodeClass + ' .fl-accordion-button' ).on('click', $.proxy( this._buttonClick, this ) );
-			
-			this._openDefaultItem();
+			$( this.nodeClass + ' .fl-accordion-button' ).click( $.proxy( this._buttonClick, this ) );
 		},
-
+		
 		_buttonClick: function( e )
 		{
 			var button      = $( e.target ).closest('.fl-accordion-button'),
@@ -49,7 +47,7 @@
 				icon.removeClass('fa-minus');
 			}
 		},
-
+		
 		_slideUpComplete: function()
 		{
 			var content 	= $( this ),
@@ -74,17 +72,6 @@
 			}
 			
 			accordion.trigger( 'fl-builder.fl-accordion-toggle-complete' );
-		},
-
-		_openDefaultItem: function()
-		{	
-			if(typeof this.settings.defaultItem !== 'undefined') {
-				var item = $.isNumeric(this.settings.defaultItem) ? (this.settings.defaultItem - 1) : null;
-				
-				if(item !== null) {
-					$( this.nodeClass + ' .fl-accordion-button' ).eq(item).trigger('click');
-				}
-			}
 		}
 	};
 	

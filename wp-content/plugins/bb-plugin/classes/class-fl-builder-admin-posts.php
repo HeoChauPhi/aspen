@@ -8,30 +8,13 @@
 final class FLBuilderAdminPosts {
 	
 	/** 
-	 * Initialize hooks.
-	 *
-	 * @since 1.8
-	 * @return void
-	 */
-	static public function init()
-	{
-		/* Actions */
-		add_action('current_screen',                __CLASS__ . '::init_rendering');
-		
-		/* Filters */
-		add_filter('redirect_post_location',        __CLASS__ . '::redirect_post_location');
-		add_filter('page_row_actions',              __CLASS__ . '::render_row_actions_link');
-		add_filter('post_row_actions',              __CLASS__ . '::render_row_actions_link');
-	}
-	
-	/** 
 	 * Sets the body class, loads assets and renders the UI
 	 * if we are on a post type that supports the builder.
 	 *
 	 * @since 1.0
 	 * @return void
 	 */
-	static public function init_rendering()
+	static public function init()
 	{
 		global $pagenow;
 		
@@ -41,9 +24,9 @@ final class FLBuilderAdminPosts {
 			$screen		= get_current_screen();
 
 			if ( in_array( $screen->post_type, $post_types ) ) {
-				add_filter( 'admin_body_class',         __CLASS__ . '::body_class', 99 );
-				add_action( 'admin_enqueue_scripts',    __CLASS__ . '::styles_scripts' );
-				add_action( 'edit_form_after_title',    __CLASS__ . '::render' );
+				add_filter( 'admin_body_class', 'FLBuilderAdminPosts::body_class', 99 );
+				add_action( 'admin_enqueue_scripts', 'FLBuilderAdminPosts::styles_scripts' );
+				add_action( 'edit_form_after_title', 'FLBuilderAdminPosts::render' );
 			}
 		}
 	}
@@ -151,5 +134,3 @@ final class FLBuilderAdminPosts {
 		return $location;
 	}
 }
-
-FLBuilderAdminPosts::init();

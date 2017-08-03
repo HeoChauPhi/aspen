@@ -39,9 +39,10 @@ function pdj_setup() {
 // Theme support custom logo
 add_theme_support( 'post-thumbnails' );
 
-add_action( 'init', 'pdj_remove_default_field' );
+add_action( 'admin_init', 'pdj_remove_default_field' );
 function pdj_remove_default_field() {
   remove_post_type_support( 'page', 'thumbnail' );
+  remove_post_type_support( 'post', 'thumbnail' );
 }
 
 // Unset URL from comment form
@@ -230,10 +231,12 @@ class footer_Widget extends WP_Widget {
   }
 
   public function widget( $args, $instance ) {
-    $title    = apply_filters( 'widget_title', $instance['title'] );
+    $title        = apply_filters( 'widget_title', $instance['title'] );
+    $widget_class = $instance['widget_class'];
     echo $args['before_widget'];
     if ( $title ) {
       echo $args['before_title'] . $title . $args['after_title'];
+      echo $widget_class;
     }
     echo $args['after_widget'];
   }
@@ -241,15 +244,21 @@ class footer_Widget extends WP_Widget {
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
     $instance['title'] = strip_tags($new_instance['title']);
+    $instance['widget_class'] = strip_tags($new_instance['widget_class']);
     return $instance;
   }
 
   function form( $instance ) {
-    $title      = esc_attr( $instance['title'] );
+    $title          = esc_attr( $instance['title'] );
+    $widget_class   = esc_attr( $instance['widget_class'] );
     ?>
     <p>
       <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
       <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+    </p>
+    <p>
+      <label for="<?php echo $this->get_field_id('widget_class'); ?>"><?php _e('Widget Class:'); ?></label>
+      <input class="widefat" id="<?php echo $this->get_field_id('widget_class'); ?>" name="<?php echo $this->get_field_name('widget_class'); ?>" type="text" value="<?php echo $widget_class; ?>" />
     </p>
     <?php
   }

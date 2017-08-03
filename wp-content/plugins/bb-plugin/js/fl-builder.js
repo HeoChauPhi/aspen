@@ -303,7 +303,7 @@
 			FLBuilder._initScrollbars();
 			FLBuilder._initLightboxes();
 			FLBuilder._initSortables();
-			FLBuilder._initStrings();
+			FLBuilder._initCoreTemplateSettings();
 			FLBuilder._bindEvents();
 			FLBuilder._bindOverlayEvents();
 			FLBuilder._setupEmptyLayout();
@@ -586,18 +586,6 @@
 		},
 		
 		/**
-		 * Initializes text translation
-		 *
-		 * @since 1.0
-		 * @access private
-		 * @method _initStrings
-		 */
-		_initStrings: function()
-		{
-			$.validator.messages.required = FLBuilderStrings.validateRequiredMessage;
-		},
-
-		/**
 		 * Binds most of the events for the builder interface.
 		 *
 		 * @since 1.0
@@ -646,9 +634,6 @@
 			
 			/* Actions Lightbox */
 			$('body').delegate('.fl-builder-actions .fl-builder-cancel-button', 'click', FLBuilder._cancelButtonClicked);
-
-			/* Expand/Contract Lightbox */
-			$('body').delegate('.fl-lightbox-controls .fa', 'click', FLBuilder._resizeLightbox);			
 			
 			/* Save Actions */
 			$('body').delegate('.fl-builder-save-actions .fl-builder-publish-button', 'click', FLBuilder._publishButtonClicked);
@@ -1016,47 +1001,34 @@
 		 */
 		_toolsClicked: function()
 		{
-			var buttons             = [],
+			var buttons             = {},
 				lite                = FLBuilderConfig.lite,
 				enabledTemplates    = FLBuilderConfig.enabledTemplates;
 			
 			// Template buttons
 			if(!lite && !FLBuilderConfig.isUserTemplate && (enabledTemplates == 'enabled' || enabledTemplates == 'user')) {
-				buttons[ 10 ] = {
-					'key': 'save-user-template',
-					'label': FLBuilderStrings.saveTemplate
-				};
+			
+				buttons['save-user-template'] = FLBuilderStrings.saveTemplate;
+				
+				if('undefined' != typeof FLBuilderTemplateSettings) {
+					buttons['save-template'] = FLBuilderStrings.saveCoreTemplate;
+				}
 			}
 				
 			// Duplicate button
 			if(FLBuilderConfig.isUserTemplate) {
 				if ( typeof window.opener == 'undefined' || ! window.opener ) {
-					buttons[ 20 ] = {
-						'key': 'duplicate-layout',
-						'label': FLBuilderStrings.duplicateLayout
-					};
+					buttons['duplicate-layout'] = FLBuilderStrings.duplicateLayout;
 				}
 			}
 			else {
-				buttons[ 20 ] = {
-					'key': 'duplicate-layout',
-					'label': FLBuilderStrings.duplicateLayout
-				};
+				buttons['duplicate-layout'] = FLBuilderStrings.duplicateLayout;
 			}
 			
-			// Layout settings button 
-			buttons[ 30 ] = {
-				'key': 'layout-settings',
-				'label': FLBuilderStrings.editLayoutSettings
-			};
-			
-			// Global settings button 
-			buttons[ 40 ] = {
-				'key': 'global-settings',
-				'label': FLBuilderStrings.editGlobalSettings
-			};
+			// Settings button 
+			buttons['layout-settings'] = FLBuilderStrings.editLayoutSettings;
+			buttons['global-settings'] = FLBuilderStrings.editGlobalSettings;
 				
-			// Show the lightbox.
 			FLBuilder._showActionsLightbox({
 				'className' : 'fl-builder-tools-actions',
 				'title'     : FLBuilderStrings.actionsLightboxTitle,
@@ -1073,32 +1045,20 @@
 		 */
 		_doneClicked: function()
 		{
-			var buttons           = [],
-				publishButtonText = FLBuilderStrings.publish;
+			var publishButtonText = FLBuilderStrings.publish;
 
 			if(FLBuilderConfig.postStatus != 'publish' && !FLBuilderConfig.userCanPublish) {
 				publishButtonText = FLBuilderStrings.submitForReview;
 			}
-			
-			buttons[ 10 ] = {
-				'key': 'publish',
-				'label': publishButtonText
-			};
-			
-			buttons[ 20 ] = {
-				'key': 'draft',
-				'label': FLBuilderStrings.draft
-			};
-			
-			buttons[ 30 ] = {
-				'key': 'discard',
-				'label': FLBuilderStrings.discard
-			};
-			
+
 			FLBuilder._showActionsLightbox({
 				'className': 'fl-builder-save-actions',
 				'title': FLBuilderStrings.actionsLightboxTitle,
-				'buttons': buttons
+				'buttons': {
+					'publish': publishButtonText,
+					'draft': FLBuilderStrings.draft,
+					'discard': FLBuilderStrings.discard
+				}
 			});
 		},
 		
@@ -1127,28 +1087,16 @@
 			var buttons = {};
 			
 			if ( FLBuilderConfig.help.tour ) {
-				buttons[ 10 ] = {
-					'key': 'help-tour',
-					'label': FLBuilderStrings.takeHelpTour
-				};
+				buttons['help-tour'] = FLBuilderStrings.takeHelpTour;
 			}
 			if ( FLBuilderConfig.help.video ) {
-				buttons[ 20 ] = {
-					'key': 'help-video',
-					'label': FLBuilderStrings.watchHelpVideo
-				};
+				buttons['help-video'] = FLBuilderStrings.watchHelpVideo;
 			}
 			if ( FLBuilderConfig.help.knowledge_base ) {
-				buttons[ 30 ] = {
-					'key': 'knowledge-base',
-					'label': FLBuilderStrings.viewKnowledgeBase
-				};
+				buttons['knowledge-base'] = FLBuilderStrings.viewKnowledgeBase;
 			}
 			if ( FLBuilderConfig.help.forums ) {
-				buttons[ 40 ] = {
-					'key': 'forums',
-					'label': FLBuilderStrings.visitForums
-				};
+				buttons.forums = FLBuilderStrings.visitForums;
 			}
 			
 			FLBuilder._showActionsLightbox({
@@ -1649,7 +1597,7 @@
 			if ( 'disabled' == FLBuilderConfig.enabledTemplates ) {
 				return;
 			}
-			if ( 0 === $( '.fl-builder-templates-button' ).length ) {
+			if ( FLBuilderConfig.lite ) {
 				return;    
 			}
 			
@@ -1678,13 +1626,11 @@
 			FLBuilder._setLightboxContent( data.html );
 			
 			// Set the vars.
-			select 			 = $( '.fl-template-category-select' );
-			tabs             = $( '.fl-builder-settings-tab' );
-			userTemplatesTab = $( '#fl-builder-settings-tab-yours' );
-			userTemplates 	 = $( '.fl-user-template' );
+			select 			= $( '.fl-template-category-select' );
+			userTemplates 	= $( '.fl-user-template' );
 			
 			// Default to the user templates tab?
-			if ( 'user' == FLBuilderConfig.enabledTemplates || userTemplates.length > 0 || ( userTemplatesTab.length > 0 && tabs.length == 1 ) ) {
+			if ( 'user' == FLBuilderConfig.enabledTemplates || userTemplates.length > 0 ) {
 				select.val( 'fl-builder-settings-tab-yours' );
 				$( '.fl-builder-settings-tab' ).removeClass( 'fl-active' );
 				$( '#fl-builder-settings-tab-yours' ).addClass( 'fl-active' );
@@ -1727,7 +1673,7 @@
 			
 			if($(FLBuilder._contentClass).children('.fl-row').length > 0) {
 				
-				if(index == 0) {
+				if(index === 0) {
 					if(confirm(FLBuilderStrings.changeTemplateMessage)) {
 						FLBuilder._lightbox._node.hide();
 						FLBuilder._applyTemplate(0, false, 'core');
@@ -1754,22 +1700,13 @@
 		 */
 		_showTemplateActions: function()
 		{
-			var buttons = [];
-			
-			buttons[ 10 ] = {
-				'key': 'template-replace',
-				'label': FLBuilderStrings.templateReplace
-			};
-			
-			buttons[ 20 ] = {
-				'key': 'template-append',
-				'label': FLBuilderStrings.templateAppend
-			};
-			
 			FLBuilder._showActionsLightbox({
 				'className': 'fl-builder-template-actions',
 				'title': FLBuilderStrings.actionsLightboxTitle,
-				'buttons': buttons
+				'buttons': {
+					'template-replace': FLBuilderStrings.templateReplace,
+					'template-append': FLBuilderStrings.templateAppend
+				}
 			});
 		},
 		
@@ -2024,6 +1961,23 @@
 			e.stopPropagation();
 		},
 		
+		/* Core Template Settings
+		----------------------------------------------------------*/
+		
+		/**
+		 * Initializes the settings for saving core templates.
+		 *
+		 * @since 1.0
+		 * @access private
+		 * @method _initCoreTemplateSettings
+		 */
+		_initCoreTemplateSettings: function()
+		{
+			if('undefined' != typeof FLBuilderTemplateSettings) {
+				FLBuilderTemplateSettings.init();
+			}
+		},
+		
 		/* Help Actions
 		----------------------------------------------------------*/
 		
@@ -2033,7 +1987,7 @@
 		 *
 		 * @since 1.4.9
 		 * @access private
-		 * @method _watchVideoClicked
+		 * @method _initCoreTemplateSettings
 		 */
 		_watchVideoClicked: function()
 		{
@@ -4269,11 +4223,10 @@
 			
 			// Apply and render the node template.
 			FLBuilder.ajax({
-				action	 	  : action,
-				template_id   : item.attr( 'data-id' ),
-				template_type : item.attr( 'data-type' ),
-				parent_id     : parentId,
-				position 	  : position
+				action	 	 : action,
+				template_id  : item.attr( 'data-id' ),
+				parent_id    : parentId,
+				position 	 : position
 			}, callback );
 			
 			// Remove the helper.
@@ -4358,11 +4311,6 @@
 			FLBuilder._initAutoSuggestFields();
 			FLBuilder._initLinkFields();
 			FLBuilder._initFontFields();
-			
-			/**
-		     * Hook for settings form init.
-		     */
-		    FLBuilder.triggerHook('settings-form-init');
 		},
 		
 		/**
@@ -5978,13 +5926,16 @@
 				textarea.after( hidden );
 			}
 			
-			// Save editor content to TinyMCE's textarea.
+			// Update the hidden textarea content.
 			if ( editor && wrap.hasClass( 'tmce-active' ) ) {
-				editor.save();
+				hidden.val( editor.getContent() );
 			}
-			
-			// Save TinyMCE's content to the setting's textarea.
-			hidden.val( textarea.val() );
+			else if ( 'undefined' != typeof switchEditors ) {
+				hidden.val( switchEditors.wpautop( textarea.val() ) );
+			}
+			else {
+				hidden.val( textarea.val() );
+			}
 		},
 		
 		/* Loop Builder Fields
@@ -6021,19 +5972,14 @@
 			var dropdown     = $( this ),
 			    textField    = $( 'input[name="' + dropdown.data( 'target' ) + '"]' ),
 			    currentValue = textField.val(),
-			    addingValue  = dropdown.val(),
-				newValue     = '';
+			    addingValue  = dropdown.val();
 
 			// Adding selected value to target text field only once
 
 				if ( -1 == currentValue.indexOf( addingValue ) ) {
-				
-					newValue = ( currentValue.trim() + ' ' + addingValue.trim() ).trim();
 
 					textField
-						.val( newValue )
-						.trigger( 'change' )
-						.trigger( 'keyup' );
+						.attr( 'value', ( currentValue.trim() + ' ' + addingValue.trim() ) );
 
 				}
 
@@ -6270,26 +6216,8 @@
 		_showActionsLightbox: function(settings)
 		{
 			var template = wp.template( 'fl-actions-lightbox' );
-			
-			// Allow extensions to modify the settings object.
-			FLBuilder.triggerHook( 'actions-lightbox-settings', settings );
-			
-			// Open the lightbox.
+
 			FLBuilder._actionsLightbox.open( template( settings ) );
-		},
-
-		/**
-		 * Resize lightbox to wether expand or contract
-		 * 
-		 * @access private
-		 * @method _expandLightbox
-		 */
-		_resizeLightbox: function(){
-			var link 			= $(this),
-				resizeType 		= (link.hasClass('fa-expand')) ? 'expand' : 'contract';
-
-			FLBuilder._lightbox.renderResize( resizeType );
-			$(this).toggleClass("fa-expand").toggleClass("fa-compress");
 		},
 		
 		/* Alert Lightboxes
@@ -6323,48 +6251,6 @@
 		_alertClose: function()
 		{
 			FLLightbox.closeParent(this);
-		},
-		
-		/* Simple JS hooks similar to WordPress PHP hooks.
-		----------------------------------------------------------*/
-		
-		/**
-		 * Trigger a hook.
-		 *
-		 * @since 1.8
-		 * @method triggerHook
-		 * @param {String} hook The hook to trigger.
-		 * @param {Array} args An array of args to pass to the hook.
-		 */
-		triggerHook: function( hook, args )
-		{
-			$( 'body' ).trigger( 'fl-builder.' + hook, args );
-		},
-	
-		/**
-		 * Add a hook.
-		 *
-		 * @since 1.8
-		 * @method addHook
-		 * @param {String} hook The hook to add.
-		 * @param {Function} callback A function to call when the hook is triggered.
-		 */
-		addHook: function( hook, callback )
-		{
-			$( 'body' ).on( 'fl-builder.' + hook, callback );
-		},
-	
-		/**
-		 * Remove a hook.
-		 *
-		 * @since 1.8
-		 * @method removeHook
-		 * @param {String} hook The hook to remove.
-		 * @param {Function} callback The callback function to remove.
-		 */
-		removeHook: function( hook, callback )
-		{
-			$( 'body' ).off( 'fl-builder.' + hook, callback );
 		},
 		
 		/* Console Logging

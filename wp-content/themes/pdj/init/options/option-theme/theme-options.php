@@ -57,13 +57,17 @@ class PDJSettingsPage {
   * Register and add settings
   */
   public function pdj_page_init() {
-    register_setting('pdj_option_config', 'pdj_board_settings');
+    register_setting(
+      'pdj_option_config', 
+      'pdj_board_settings',
+      array( $this, 'pdj_sanitize' )
+    );
 
-    // Setting ID
+    // Google Setting
     add_settings_section(
       'pdj_google_api', // ID
       __('Google API', 'pdj_theme'), // Title
-      array( $this ), // Callback
+      array( $this, 'pdj_google_print_section_info' ), // Callback
       'pdj-setting-admin' // Page
     );
 
@@ -75,13 +79,52 @@ class PDJSettingsPage {
       'pdj_google_api',
       'pdj_google_api_key'
     );
+
+    // Facebook Setting
+    add_settings_section(
+      'pdj_facebook_setting', // ID
+      __('Facebook Setting', 'pdj_theme'), // Title
+      array( $this, 'pdj_facebook_print_section_info' ), // Callback
+      'pdj-setting-admin' // Page
+    );
+
+    add_settings_field(
+      'pdj_facebook_url',
+      __('Facebook Fanpage URL', 'pdj_theme'),
+      array( $this, 'pdj_form_textfield' ), // Callback
+      'pdj-setting-admin', // Page
+      'pdj_facebook_setting',
+      'pdj_facebook_url'
+    );
+  }
+
+  /**
+   * Sanitize each setting field as needed
+   *
+   * @param array $input Contains all settings fields as array keys
+   */
+  public function pdj_sanitize( $input ) {
+    $new_input = array();
+
+    if( isset( $input['pdj_google_api_key'] ) )
+      $new_input['pdj_google_api_key'] = sanitize_text_field( $input['pdj_google_api_key'] );
+
+    if( isset( $input['pdj_facebook_url'] ) )
+      $new_input['pdj_facebook_url'] = sanitize_text_field( $input['pdj_facebook_url'] );
+
+    return $new_input;
   }
 
   /**
   * Print the Section text
   */
-  public function pdj_print_section_info() {
-    echo __("Use shortcode [pdj_share_this]", 'pdj_theme');
+
+  public function pdj_google_print_section_info() {
+    echo __("", 'pdj_theme');
+  }
+
+  public function pdj_facebook_print_section_info() {
+    echo __("", 'pdj_theme');
   }
 
   /**

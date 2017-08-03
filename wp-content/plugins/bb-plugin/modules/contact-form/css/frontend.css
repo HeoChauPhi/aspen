@@ -40,16 +40,12 @@
 	display: inline-block;
 }
 .fl-contact-form .fl-send-error,
-.fl-contact-form .fl-success,
-.fl-contact-form .fl-success-none,
-.fl-contact-form .fl-success-msg {
+.fl-contact-form .fl-success {
 	position: relative;
-	top: 5px;
+	left: 5px;
 }
-.fl-contact-form .fl-success,
-.fl-contact-form .fl-success-none,
-.fl-contact-form .fl-success-msg {
-	color: #29BB41;
+.fl-contact-form .fl-success {
+	color: green;
 }
 .fl-contact-form .fl-send-error {
 	color: #DD6420;

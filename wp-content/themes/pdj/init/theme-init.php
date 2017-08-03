@@ -118,23 +118,22 @@ function shortcode($name) {
  *
  */
 function acfwidget($name, $widgetid) {
-  if (get_field($name, 'widget_'.$widgetid)) {
-    $acffield = get_field($name, 'widget_'.$widgetid);
-    //print_r($afcfield);
+  $acffield = get_field($name, 'widget_' . $widgetid);
+  //print_r($acffield);
 
-    /*if ( !empty( $afcfield ) ) {
-      foreach ($afcfield as $field) {
-        $layout = $field['acf_fc_layout'];
+  if ( !empty( $acffield ) ) {
+    foreach ($acffield as $field) {
+      //print_r($field);
+      $layout = $field['acf_fc_layout'];
 
-        try {
-          Timber::render($layout . '.twig', $field);
-        } catch (Exception $e) {
-          echo 'Could not find a twig file for layout type: ' . $layout;
-        }
+      try {
+        Timber::render($layout . '.twig', $field);
+      } catch (Exception $e) {
+        echo 'Could not find a twig file for layout type: ' . $layout;
       }
-    }*/
+    }
   }
-  return $acffield;
+  return;
 }
 
 /**
@@ -326,8 +325,72 @@ function acf_return_item($field, $type = 0, $post_obj, $post_type, $taxonomy = '
 
 /**
  *
+ * ACF Custom Function.
+ *
+ */
+
+/* Function Post List  */
+function posts_list($fieldobj) {
+  $field = $fieldobj;
+  $layout = $field['acf_fc_layout'];
+  $type = $field['posts_list_type'];
+
+  if ($type == 'custom') {
+    $post_ids = [];
+    $post_obj = $field['posts_list_custom'];
+    foreach ($post_obj as $value) {
+      array_push($post_ids, $value->ID);
+    }
+    
+    $arg_post = array(
+      'post_type'       => 'post',
+      'post_status'     => 'publish',
+      'post__in'        => $post_ids,
+      'orderby'         => 'post__in'
+    );
+    $posts = Timber::get_posts($arg_post);
+    $field['posts_list_custom'] = $posts;
+  } else {
+    $arg_post = array(
+      'post_type'       => 'post',
+      'post_status'     => 'publish',
+      'posts_per_page'  => $field['posts_list_per_page'],
+    );
+    $posts = Timber::get_posts($arg_post);
+    $field['posts_list_custom'] = $posts;
+  }
+  //print_r($field);
+  return $field;
+}
+
+function layout_resuft($layout_resuft) {
+  $arr_resuft = [];
+
+  foreach ($layout_resuft as $subfield) {
+    $subfield_layout = $subfield['acf_fc_layout'];
+
+    switch ($subfield_layout) {
+      case 'posts_list':
+        array_push($arr_resuft, posts_list($subfield));
+        break;
+
+      case 'layout_two_columns':
+      case 'layout_one_column':
+        echo __('Content - Sidebar field don\'t work in this layout.', 'pdj_theme');
+        break;
+
+      default:
+        array_push($arr_resuft, $subfield);
+    }
+  }
+
+  return $arr_resuft;
+}
+
+/**
+ *
  * ACF Flexible Content Fielld.
- * @param type $name String Slud ACF flexible_content field.
+ * @param type $name String Slug ACF flexible_content field.
  *
  * @return Array all sub_fields in flexible_content field.
  *
@@ -345,26 +408,111 @@ function flexible_content($name) {
       $fc_type[$layout] = array();
 
       switch ($layout) {
-        case 'map_block':
-          $theme_options = get_option('pdj_board_settings');
-          $google_api_key = $theme_options['pdj_google_api_key'];
-
-          $field['google_api_key'] = $google_api_key;
+        case 'posts_list':
+          $field = posts_list($field);
 
           try {
             Timber::render($layout . '.twig', $field);
           } catch (Exception $e) {
-            echo 'Could not find a twig file for layout type: ' . $layout . '<br>';
+            echo __('Could not find a twig file for layout type: ', 'pdj_theme') . $layout . '<br>';
           }
           break;
+
+        /*case 'layout_two_columns':
+          $column_first = $field['column_first_group_component'];
+          $column_seccond = $field['column_seccond_group_component'];
+          $field['column_first_group_component_resuft'] = [];
+          $field['column_seccond_group_component_resuft'] = [];
+
+          foreach ($column_first as $subfield) {
+            $subfield_layout = $subfield['acf_fc_layout'];
+
+            switch ($subfield_layout) {
+
+              case 'posts_list':
+                array_push($field['column_first_group_component_resuft'], posts_list($subfield));
+                break;
+
+              case 'layout_two_columns':
+              case 'layout_one_column':
+                echo __('Content - Sidebar field don\'t work in this layout.', 'pdj_theme');
+                break;
+
+              default:
+                array_push($field['column_first_group_component_resuft'], $subfield);
+            }
+          }
+
+          foreach ($column_seccond as $subfield) {
+            $subfield_layout = $subfield['acf_fc_layout'];
+
+            switch ($subfield_layout) {
+              case 'posts_list':
+                array_push($field['column_seccond_group_component_resuft'], posts_list($subfield));
+                break;
+
+              case 'layout_two_columns':
+              case 'layout_one_column':
+                echo __('Content - Sidebar field don\'t work in this layout.', 'pdj_theme');
+                break;
+
+              default:
+                array_push($field['column_seccond_group_component_resuft'], $subfield);
+            }
+          }
+          //print_r($field);
+          try {
+            Timber::render($layout . '.twig', $field);
+          } catch (Exception $e) {
+            echo __('Could not find a twig file for layout type: ', 'pdj_theme') . $layout . '<br>';
+          }
+
+          break;*/
+
         default:
           //print_r($field);
           try {
             Timber::render($layout . '.twig', $field);
           } catch (Exception $e) {
-            echo 'Could not find a twig file for layout type: ' . $layout . '<br>';
+            echo __('Could not find a twig file for layout type: ', 'pdj_theme') . $layout . '<br>';
           }
       }
+    }
+  }
+
+  return;
+}
+
+/**
+ *
+ * ACF Clone Field.
+ * @param type $name String Slug of clone field type.
+ *
+ * @return Array or Object ò all field cloned.
+ *
+ */
+function sub_flexible_content($name) {
+  foreach ($name as $field) {
+    $layout = $field['acf_fc_layout'];
+
+    switch ($layout) {
+      case 'posts_list':
+        $field = posts_list($field);
+
+        try {
+          Timber::render($layout . '.twig', $field);
+        } catch (Exception $e) {
+          echo __('Could not find a twig file for layout type: ', 'pdj_theme') . $layout . '<br>';
+        }
+        break;
+      
+      default:
+        try {
+          Timber::render($layout . '.twig', $field);
+        } catch (Exception $e) {
+          echo __('Could not find a twig file for layout type: ', 'pdj_theme') . $layout . '<br>';
+        }
+        break;
     }
   }
 
@@ -519,6 +667,20 @@ function pdj_twig_data($data){
   $data['sidebar_widget'] = $widget_data_sidebar;
   $data['header_widget'] = $widget_data_header;
   $data['footer_widget'] = $widget_data_footer;
+
+  // Theme option
+  /*$theme_options        = get_option('pdj_board_settings');
+  $google_api_key       = $theme_options['pdj_google_api_key'];
+  $pdj_facebook_url     = $theme_options['pdj_facebook_url'];
+
+  $data['google_api_key']       = $google_api_key;
+  $data['facebook_fanpage']     = $pdj_facebook_url;*/
+
+  // Data Export
+  if(is_tax()){
+    $term_id = get_queried_object_id();
+    $data['term_link'] = get_term_link($term_id);
+  }
 
   return $data;
 }

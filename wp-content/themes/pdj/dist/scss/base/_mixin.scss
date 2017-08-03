@@ -18,4 +18,8 @@
   @else if $point == mobileonly {
     @media (max-width: em(480px))  { @content ; }
   }
+
+  @else {
+    @media (min-width: $point) { @content ; }
+  }
 }

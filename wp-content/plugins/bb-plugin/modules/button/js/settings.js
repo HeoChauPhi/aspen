@@ -3,6 +3,9 @@
 	FLBuilder.registerModuleHelper('button', {
 
 		rules: {
+			text: {
+				required: true
+			},
 			link: {
 				required: true
 			},
