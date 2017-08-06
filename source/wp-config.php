@@ -57,8 +57,8 @@ define('NONCE_SALT',       'D{vPoW]014C5cqG8VM;*ofM|  T <B *t,WQI&3DiZvxs=[IsT(6
 
 /** A couple extra tweaks to help things run well on Pantheon. **/
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == "localhost") {
-  define('WP_HOME', "http://localhost/demowp/aspen/");
-  define('WP_SITEURL', "http://localhost/demowp/aspen/");
+  define('WP_HOME', "http://localhost/demowp/aspen/source/");
+  define('WP_SITEURL', "http://localhost/demowp/aspen/source/");
 } elseif (isset($_SERVER['HTTP_HOST'])) {
   // HTTP is still the default scheme for now. 
   $scheme = 'http';
