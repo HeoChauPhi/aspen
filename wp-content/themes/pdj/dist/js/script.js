@@ -54,12 +54,17 @@
   function jcarousel_slider($name, $item) {
     if ($item < 3) {
       $($name).slick({
-        adaptiveHeight: true,
-        arrows: false,
-        dots: true,
-        fade: true,
         infinite: true,
-        slidesToShow: 1,
+        slidesToShow: $item,
+        slidesToScroll: 1,
+        responsive: [
+          {
+            breakpoint: 568,
+            settings: {
+              slidesToShow: 1
+            }
+          }
+        ]
       });
     } else {
       $($name).slick({

@@ -1,9 +1,5 @@
 {% extends 'layout.twig' %}
 
-{% block feature %}
-  {% include 'hero_banner.twig' %}
-{% endblock %}
-
 {% block content %}
   {% for post in posts %}
     {{ post.content|shortcodes }}

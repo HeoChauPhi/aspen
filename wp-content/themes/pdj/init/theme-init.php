@@ -129,7 +129,7 @@ function acfwidget($name, $widgetid) {
       try {
         Timber::render($layout . '.twig', $field);
       } catch (Exception $e) {
-        echo 'Could not find a twig file for layout type: ' . $layout;
+        echo __('Could not find a twig file for layout type: ', 'pdj_theme') . $layout  . '<br>';
       }
     }
   }
@@ -410,7 +410,7 @@ function flexible_content($name) {
       switch ($layout) {
         case 'posts_list':
           $field = posts_list($field);
-
+          //print_r($field);
           try {
             Timber::render($layout . '.twig', $field);
           } catch (Exception $e) {
@@ -669,12 +669,12 @@ function pdj_twig_data($data){
   $data['footer_widget'] = $widget_data_footer;
 
   // Theme option
-  /*$theme_options        = get_option('pdj_board_settings');
+  $theme_options        = get_option('pdj_board_settings');
   $google_api_key       = $theme_options['pdj_google_api_key'];
   $pdj_facebook_url     = $theme_options['pdj_facebook_url'];
 
   $data['google_api_key']       = $google_api_key;
-  $data['facebook_fanpage']     = $pdj_facebook_url;*/
+  $data['facebook_fanpage']     = $pdj_facebook_url;
 
   // Data Export
   if(is_tax()){

@@ -172,3 +172,10 @@ function ct_remove_editor() {
   remove_post_type_support('page', 'editor');
 }
 add_action('admin_init', 'ct_remove_editor');
+
+// Add google API Key
+add_action('acf/init', function() {
+  $theme_options = get_option('pdj_board_settings');
+  $google_api_key = $theme_options['pdj_google_api_key'];
+  acf_update_setting('google_api_key', $google_api_key);
+});

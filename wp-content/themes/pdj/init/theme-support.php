@@ -42,7 +42,6 @@ add_theme_support( 'post-thumbnails' );
 add_action( 'admin_init', 'pdj_remove_default_field' );
 function pdj_remove_default_field() {
   remove_post_type_support( 'page', 'thumbnail' );
-  remove_post_type_support( 'post', 'thumbnail' );
 }
 
 // Unset URL from comment form
