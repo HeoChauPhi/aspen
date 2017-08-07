@@ -5,7 +5,7 @@ txtgrn=$(tput setaf 2) # Green
 txtrst=$(tput sgr0) # Text reset.
 
 COMMIT_MESSAGE="Deploy by $(git config --get user.name), $(git rev-parse --abbrev-ref HEAD) ($(git rev-parse --short HEAD))"
-PANTHEON_GIT_URL="ssh://codeserver.dev.32cdfc62-1baa-4baa-8373-67d11d0e8fe7@codeserver.dev.32cdfc62-1baa-4baa-8373-67d11d0e8fe7.drush.in:2222/~/repository.git"
+PANTHEON_GIT_URL="ssh://codeserver.dev.e111bbe2-f823-4106-8a57-0ca6dc63763d@codeserver.dev.e111bbe2-f823-4106-8a57-0ca6dc63763d.drush.in:2222/~/repository.git"
 
 # If the Pantheon git directory does not exist.
 if [ ! -d ".pantheon" ]
@@ -19,7 +19,7 @@ else
 fi
 
 echo -e "\n${txtgrn}Applying new changes to Pantheon repo ${txtrst}"
-bash -c 'rsync -a --delete "../source/" ".pantheon/" --exclude .git --exclude .gitignore --exclude .env --exclude uploads'
+bash -c 'rsync -a --delete "../source/" ".pantheon/" --exclude .git --exclude .gitignore --exclude mu-plugins --exclude pantheon.yml --exclude license.txt --exclude readme.html --exclude uploads --exclude wp-config.php'
 #xcopy 'D:/wamp64/www/demowp/aspen/source' 'D:/wamp64/www/demowp/aspen/deploy/.pantheon' /E /I /Y
 
 # Move into the pantheon repo to apply changes.
