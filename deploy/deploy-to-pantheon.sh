@@ -19,13 +19,13 @@ else
 fi
 
 echo -e "\n${txtgrn}Applying new changes to Pantheon repo ${txtrst}"
-bash -c 'rsync -a --delete "source/" ".pantheon/" --exclude .git --exclude .gitignore --exclude .env --exclude uploads'
+bash -c 'rsync -a --delete "../source/" ".pantheon/" --exclude .git --exclude .gitignore --exclude .env --exclude uploads'
 #xcopy 'D:/wamp64/www/demowp/aspen/source' 'D:/wamp64/www/demowp/aspen/deploy/.pantheon' /E /I /Y
 
 # Move into the pantheon repo to apply changes.
-#cd .pantheon
-#git add -A
-#git commit -m"$COMMIT_MESSAGE"
+cd .pantheon
+git add -A
+git commit -m"$COMMIT_MESSAGE"
 
-#echo -e "\n${txtgrn}Pushing the master branch to Pantheon ${txtrst}"
-#git push --force
+echo -e "\n${txtgrn}Pushing the master branch to Pantheon ${txtrst}"
+git push --force
