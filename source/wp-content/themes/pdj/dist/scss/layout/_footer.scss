@@ -1,0 +1,63 @@
+#footer {
+  padding-top: rem(50px);
+}
+
+.footer-panel {
+
+}
+
+.footer-bottom {
+  padding-top: rem(40px);
+  text-align: center;
+}
+
+// Footer Block
+.footer-contact-us {
+  margin-bottom: rem(30px);
+
+  .footer-logo {
+    margin-bottom: rem(20px);
+
+    @include breakpoint(992px) {
+      margin-bottom: rem(110px);
+    }
+  }
+
+  .footer-contact {
+    font-size: rem(23px);
+  }
+}
+
+.footer-social {
+  .social-icons__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      display: inline-block;
+      margin: rem(0 8px);
+
+      a {
+        background-color: $black;
+        border-radius: rem(500px);
+        color: $white;
+        display: block;
+        font-size: rem(25px);
+        height: rem(40px);
+        line-height: rem(40px);
+        text-align: center;
+        width: rem(40px);
+      }
+    }
+  }
+}
+
+.footer-copyright {
+  padding: rem(10px 0);
+
+  p {
+    margin: 0;
+    font-size: rem(18px);
+  }
+}

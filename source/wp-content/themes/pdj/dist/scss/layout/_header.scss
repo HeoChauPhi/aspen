@@ -1,0 +1,16 @@
+#header {
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 9;
+}
+
+.header__logo {
+  text-align: center;
+  padding: rem(18px 0);
+
+  @include breakpoint(tablet) {
+    text-align: left;
+  }
+}

@@ -19,7 +19,7 @@ else
 fi
 
 echo -e "\n${txtgrn}Applying new changes to Pantheon repo ${txtrst}"
-bash -c 'rsync -a --delete "../source/" ".pantheon/" --exclude .git --exclude .gitignore --exclude mu-plugins --exclude pantheon.yml --exclude license.txt --exclude readme.html --exclude uploads --exclude wp-config.php'
+bash -c 'rsync -a --delete "../source/" ".pantheon/" --exclude .git --exclude .gitignore --exclude mu-plugins --exclude pantheon.yml --exclude license.txt --exclude readme.html --exclude uploads --exclude wp-config.php --exclude .htaccess'
 #xcopy 'D:/wamp64/www/demowp/aspen/source' 'D:/wamp64/www/demowp/aspen/deploy/.pantheon' /E /I /Y
 
 # Move into the pantheon repo to apply changes.

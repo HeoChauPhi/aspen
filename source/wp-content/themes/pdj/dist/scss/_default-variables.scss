@@ -20,6 +20,11 @@ $icon-font-path: '../bootstrap/assets/fonts/bootstrap/';
 $container-large-desktop: 1200px !default;
 
 // Fonts.
+@mixin muli($weight: normal) {
+  font-family: 'Muli', sans-serif;
+  font-weight: $weight;
+}
+
 @mixin opensans {
   font-family: 'Open Sans', sans-serif;
 }

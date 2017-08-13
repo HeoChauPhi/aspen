@@ -12,7 +12,7 @@
           <div class="comment-link-reply">{{comment.reply_link}}</div>
         </div>
       </div>
-      
+
       {% if comment.children is not empty %}
         <div class="indented">
           {% for subcomment in comment.children %}
@@ -22,8 +22,8 @@
                 <div class="comment-header">
                   <span class="comment-date">{{comment.date}}</span> | <a class="comment-author" href="{{ site.url }}/author/{{subcomment.author.name}}">{{subcomment.author.name}}</a>
                 </div>
-                <div class="comment-comment">{{subcomment.content}}</div>  
-                <div class="comment-link-reply">{{subcomment.reply_link}}</div>  
+                <div class="comment-comment">{{subcomment.content}}</div>
+                <div class="comment-link-reply">{{subcomment.reply_link}}</div>
               </div>
             </div>
           {% endfor %}

@@ -55,29 +55,7 @@ define('SECURE_AUTH_SALT', 'put your unique phrase here');
 define('LOGGED_IN_SALT',   'put your unique phrase here');
 define('NONCE_SALT',       'put your unique phrase here');
 
-/** A couple extra tweaks to help things run well on Pantheon. **/
-if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == "localhost") {
-  define('WP_HOME', "http://localhost/demowp/aspen/");
-  define('WP_SITEURL', "http://localhost/demowp/aspen/");
-} elseif (isset($_SERVER['HTTP_HOST'])) {
-  // HTTP is still the default scheme for now. 
-  $scheme = 'http';
-  // If we have detected that the end use is HTTPS, make sure we pass that
-  // through here, so <img> tags and the like don't generate mixed-mode
-  // content warnings.
-  if (isset($_SERVER['HTTP_USER_AGENT_HTTPS']) && $_SERVER['HTTP_USER_AGENT_HTTPS'] == 'ON') {
-      $scheme = 'https';
-  }
-  define('WP_HOME', $scheme . '://' . $_SERVER['HTTP_HOST']);
-  define('WP_SITEURL', $scheme . '://' . $_SERVER['HTTP_HOST']);
-}
-
 /**#@-*/
-
-// Load packages from Composer
-if ( file_exists( __DIR__ . '/wp-content/plugins/timber-library/vendor/autoload.php')) {
-  require_once( __DIR__  . '/wp-content/plugins/timber-library/vendor/autoload.php');
-}
 
 /**
  * WordPress Database Table prefix.
@@ -86,16 +64,6 @@ if ( file_exists( __DIR__ . '/wp-content/plugins/timber-library/vendor/autoload.
  * a unique prefix. Only numbers, letters, and underscores please!
  */
 $table_prefix  = 'wp_';
-
-/**
- * WordPress Localized Language, defaults to English.
- *
- * Change this to localize WordPress. A corresponding MO file for the chosen
- * language must be installed to wp-content/languages. For example, install
- * de_DE.mo to wp-content/languages and set WPLANG to 'de_DE' to enable German
- * language support.
- */
-define('WPLANG', '');
 
 /**
  * For developers: WordPress debugging mode.
@@ -109,9 +77,7 @@ define('WPLANG', '');
  *
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
-if ( ! defined( 'WP_DEBUG' ) ) {
-  define('WP_DEBUG', false);
-}
+define('WP_DEBUG', false);
 
 /* That's all, stop editing! Happy blogging. */
 

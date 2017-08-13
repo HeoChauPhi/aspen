@@ -29,11 +29,11 @@
 
       {% block footer %}
         {% include 'footer.twig' %}
-        {{ wp_footer }}
-      {% endblock %}
-
-      {% block footer_scripts %}
       {% endblock %}
     </div>
+
+    {% block footer_scripts %}
+      {{ wp_footer }}
+    {% endblock %}
   </body>
 </html>
